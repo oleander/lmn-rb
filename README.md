@@ -11,7 +11,7 @@ $ gem install
 ## Run
 
 ```
-$ ruby worker.rb
+$ bundle exec ruby worker.rb
 ```
 
 ## Requirements
