@@ -3,7 +3,7 @@ require "nokogiri"
 require "colorize"
 require "terminal-notifier"
 
-movie_to_find = "lucia" # "hellström"
+movie_to_find = "hellström"
 default_date = "20141212"
 
 loop do
@@ -55,12 +55,12 @@ loop do
         href: li.at_css(".cmil_btn a").attr("href")
       }
     else
-      abort "Something when wrong, darn".red
+      next "Something when wrong, darn".red
     end
   end
 
   if times.empty?
-    abort "No saloons found".red
+    next "No saloons found".red
   end
 
   picked_time = nil
