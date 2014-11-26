@@ -3,7 +3,7 @@ require "nokogiri"
 require "colorize"
 require "terminal-notifier"
 
-movie_to_find = "hellström"
+movie_to_find = "lucia" # "hellström"
 default_date = "20141212"
 
 loop do
@@ -26,6 +26,10 @@ loop do
 
   movie_page_id = movie.at_css(".mTitle").attr("data-moviepageid")
 
+  unless movie_page_id
+    next puts "No page id found. Can't continue..."
+  end
+
   data2 = Nokogiri::HTML(HTTP.get("http://www.sf.se/UserControls/Booking/SelectShow/ShowListContainer.control?MoviePageId=#{movie_page_id}&CityId=gb&TheatreId=-1&epslanguage=sv").to_s)
 
   found_date = data2.css("#BookingMenuCurrentMovieDay li a").map do |date|
@@ -39,7 +43,7 @@ loop do
     found_date = default_date
   end
 
-  data3 = Nokogiri::HTML(HTTP.get("http://www.sf.se/UserControls/Booking/SelectShow/ShowList.control?MoviePageId=12886&SelectedDate=20141130&CityId=gb&TheatreId=-1&epslanguage=sv").to_s)
+  data3 = Nokogiri::HTML(HTTP.get("http://www.sf.se/UserControls/Booking/SelectShow/ShowList.control?MoviePageId=#{movie_page_id}&SelectedDate=#{found_date}&CityId=gb&TheatreId=-1&epslanguage=sv").to_s)
 
   theatre = nil
   times = []
