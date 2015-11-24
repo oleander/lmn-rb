@@ -4,7 +4,7 @@ require "colorize"
 require "terminal-notifier"
 
 movie_to_find = "lucia" # "hellström"
-default_date = "20141212"
+default_date = "20151212"
 
 loop do
   data = Nokogiri::HTML(HTTP.get("http://www.sf.se/biljetter/bokningsflodet/valj-forestallning/").to_s)
@@ -67,25 +67,5 @@ loop do
     next puts "No saloons found".red
   end
 
-  picked_time = nil
-
-  loop do
-    puts "Pick a saloon".green
-    times.each_with_index do |time, index|
-      puts "[#{index}] #{time[:theatre]} - #{time[:time]} - #{time[:avalible_seats]}".blue
-    end
-    index = $stdin.gets.strip
-
-    if index !~ /^\d+$/
-      next puts "'#{index}' index is not a valid choice, pick again".yellow
-    end
-
-    if picked_time = times[index.to_i]
-      break
-    else
-      next puts "'#{index}' index not found, pick again".yellow
-    end
-  end
-
-  break `open '#{picked_time[:href]}'`
+  break
 end
