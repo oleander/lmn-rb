@@ -1,17 +1,15 @@
-# LMN "booker"
+# Lucia movie night notifier
 
-Event "booker" for LMV.
-
-## Install
+## Installation
 
 ```
-$ gem install
+gem install
 ```
 
 ## Run
 
 ```
-$ bundle exec ruby worker.rb
+bundle exec ruby worker.rb
 ```
 
 ## Requirements
