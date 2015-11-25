@@ -18,6 +18,3 @@ DEPENDENCIES
   http
   nokogiri
   terminal-notifier
-
-BUNDLED WITH
-   1.10.3
