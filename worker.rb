@@ -3,10 +3,41 @@ require "nokogiri"
 require "colorize"
 require "terminal-notifier"
 
-movie_to_find = "lucia" # "hellström"
+movie_to_find = "lucia" #"hellström"
 default_date = "20151212"
 
 loop do
+
+  #MOBILE-------------------
+  puts "Looking for '#{movie_to_find}' in mobile api".yellow
+
+  #Check upcoming movies
+  upcomingMobileJSON = `curl -s -H "Host: mobilebackend.sfbio.se" -H "Proxy-Connection: keep-alive" -H "Accept: application/json" -H "X-SF-Iphone-Version: 5.2.1" -H "User-Agent: SFBio/5.2.1 (iPhone; iOS 9.1; Scale/2.00)" -H "Accept-Language: sv-SE;q=1, en-SE;q=0.9" -H "Authorization: Basic U0ZiaW9BUEk6YlNGNVBGSGNSNFoz" --compressed https://mobilebackend.sfbio.se/services/5/movies/GB/upcoming`
+  movies = JSON.parse(upcomingMobileJSON)["movies"]
+  movies.each do |movie|
+    if movie['movieName'] =~ /#{movie_to_find}/i
+      TerminalNotifier.notify("Tickets are released MOBILE", title: "Lucia Movie Night", sound: "beep")
+      puts "Movie '#{movie_to_find}' found".green
+    end
+  end
+
+  #Check movies in dates
+  dates = ["20151125", "20151126", "20151212"]
+  dates.each do |date|
+    upcomingMobileJSON = `curl -H "Host: mobilebackend.sfbio.se" -H "Proxy-Connection: keep-alive" -H "Accept: application/json" -H "X-SF-Iphone-Version: 5.2.1" -H "User-Agent: SFBio/5.2.1 (iPhone; iOS 9.1; Scale/2.00)" -H "Accept-Language: sv-SE;q=1, en-SE;q=0.9" -H "Authorization: Basic U0ZiaW9BUEk6YlNGNVBGSGNSNFoz" --compressed https://mobilebackend.sfbio.se/services/5/shows/GB/theatreid/153/day/#{date}`
+    shows = JSON.parse(upcomingMobileJSON)["shows"]
+    shows.each do |show|
+      if show['title'] =~ /#{movie_to_find}/i
+        TerminalNotifier.notify("Tickets are released MOBILE", title: "Lucia Movie Night", sound: "beep")
+        puts "Movie '#{movie_to_find}' found".green
+      end
+    end
+  end
+  
+  sleep 2
+  #------------------------
+
+  #DESKTOP-------------------
   data = Nokogiri::HTML(HTTP.get("http://www.sf.se/biljetter/bokningsflodet/valj-forestallning/").to_s)
 
   movie = data.css(".mContainer").select do |movie|
@@ -19,7 +50,7 @@ loop do
     next
   end
 
-  TerminalNotifier.notify("Tickets are released", title: "Lucia Movie Night", sound: "beep")
+  TerminalNotifier.notify("Tickets are released", title: "Lucia Movie Night", sound: "beep")  
 
   found_movie_title = movie.at_css(".concept-splash span").text
   puts "Movie '#{found_movie_title}' found".green
