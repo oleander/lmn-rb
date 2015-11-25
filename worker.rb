@@ -17,7 +17,7 @@ loop do
   movies.each do |movie|
     if movie['movieName'] =~ /#{movie_to_find}/i
       TerminalNotifier.notify("Tickets are released MOBILE", title: "Lucia Movie Night", sound: "beep")
-      puts "Movie '#{movie_to_find}' found".green
+      puts "Mobile | Movie '#{movie_to_find}' found UPCOMING".green
     end
   end
 
@@ -29,7 +29,7 @@ loop do
     shows.each do |show|
       if show['title'] =~ /#{movie_to_find}/i
         TerminalNotifier.notify("Tickets are released MOBILE", title: "Lucia Movie Night", sound: "beep")
-        puts "Movie '#{movie_to_find}' found".green
+        puts "Mobile | Movie '#{movie_to_find}' found, Auditorium: '#{show['auditoriumName']}'".green
       end
     end
   end
