@@ -29,7 +29,7 @@ loop do
     shows.each do |show|
       if show['title'] =~ /#{movie_to_find}/i
         TerminalNotifier.notify("Tickets are released MOBILE", title: "Lucia Movie Night", sound: "beep")
-        puts "Mobile | Movie '#{movie_to_find}' found, Auditorium: '#{show['auditoriumName']}'".green
+        puts "Mobile | #{date} | Movie '#{movie_to_find}' found, Auditorium: '#{show['auditoriumName']}'".green
       end
     end
   end
